@@ -4,35 +4,36 @@ program llsq
 
   implicit none
 
-  integer :: m, n, k, i, j
-  real, dimension(:,:), allocatable :: b, c, b1, b2, l1
+  integer :: m, n, k
+  real, dimension(:,:), allocatable :: b, c
   real, dimension(:,:), allocatable :: y2, y
   real, dimension(:),   allocatable :: d, e 
   real, dimension(:),   allocatable :: tau
 
-  read *, m, n, k
+  read *, m, k, n
   allocate(d(m))
   allocate(e(k))
   allocate(b(m, n))
   allocate(c(k, n))
   allocate(tau(min(n, k)))
   call read_matrix(b)
-  read *, d
   call read_matrix(c)
+  read *, d
   read *, e
   
   ! dokonaj rozkładu C = LQ
   call gelqf(c, tau)
-
+  
   ! rozwiąż układ L_1 y_1 = e
   call trsv(c(:, 1:k), e, 'L')
-  
+
   ! oblicz BQ
   call ormlq(c, tau, b, 'R', 'T')
 
   ! oblicz d - B Q_1 
-  call gemv(b(:, 1:k), e, d, -1.0)
-  
+
+  call gemv(b(:, 1:k), e, d, -1.0, 1.0)
+
   allocate(y2(max(m,k),1))
   y2(:, 1) = d
 
@@ -41,7 +42,7 @@ program llsq
 
   allocate(y(n, 1))
   y(1:k, 1) = e
-  y(k+1:n, 1) = y2(:, 1)
+  y(k+1:n, 1) = y2(1:n-k, 1)
 
   ! oblicz x = Q y
   call ormlq(c, tau, y, 'L', 'T')
