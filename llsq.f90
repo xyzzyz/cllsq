@@ -24,32 +24,17 @@ program llsq
   ! dokonaj rozkładu C = LQ
   call gelqf(c, tau)
 
-  print *, "C = LQ:"
-  call print_matrix(c)
-  print *, "tau:"
-  print *, tau
-  
-  print *, "c::"
-  call print_matrix(c(:, 1:k))
-  print *, "e", e
-
   ! rozwiąż układ L_1 y_1 = e
   call trsv(c(:, 1:k), e, 'L')
-  print *, e
   
   ! oblicz BQ
   call ormlq(c, tau, b, 'R', 'T')
-  print *, "b:"
-  call print_matrix(b)
 
   ! oblicz d - B Q_1 
   call gemv(b(:, 1:k), e, d, -1.0)
-  print *, "bq1 y1 = d", d
   
   allocate(y2(max(m,k),1))
   y2(:, 1) = d
-  print *, y2
-  call print_matrix(y2)
 
   ! rozwiąż RLZNK dla B Q_2 y_2 = d - B Q_1
   call gels(b(:, k+1:n), y2)
@@ -58,15 +43,10 @@ program llsq
   y(1:k, 1) = e
   y(k+1:n, 1) = y2(:, 1)
 
-  print *, "y: ", y
-
   ! oblicz x = Q y
   call ormlq(c, tau, y, 'L', 'T')
   
   print *, "wynik: ", y
-  ! call print_matrix(b)
-  ! print *, d
-
   
 contains
   subroutine read_matrix(a)
