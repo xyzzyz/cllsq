@@ -1,0 +1,27 @@
+* cllsq
+** what it is
+   the procedure to solve constrained [[http://en.wikipedia.org/wiki/Linear_least_squares_(mathematics)][linear least squares]] problem
+** what it is good for
+   in life of every man there is always[fn:1] a day when it turns out
+   that the constrained linear least squares problem must be
+   solved. this program lets me say "been there, done that", and pass
+   the knowledge onto others
+** why i wrote this
+   to pass the "numerical methods" course, obviously. also, i wanted
+   to check if writing numerical stuff in Fortran is really so much
+   better than in C (it is, but only if you use Fortran 95 or
+   newer. don't even _think_ about using Fortran 77, this may result
+   in a brain damage).
+** usage
+   i believe (though i don't really remember) that it reads input from
+   stdin in the format like in data.txt or data1.txt
+** license
+   do with it whatever you want, i'll be happy if you let me know that
+   you find it interesting (i don't think you do), or that you use it
+   (i'm sure you don't)
+** author
+   Adam Michalik <adamm@mimuw.edu.pl>
+
+* footnotes
+
+[fn:1] disregarding the cases where there's not
